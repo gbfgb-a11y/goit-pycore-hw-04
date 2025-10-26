@@ -5,10 +5,13 @@ def command_spliting(user_inp):
     cmd, *args = user_inp.split( )
     cmd = cmd.strip().lower()
     return cmd, args
+
+
 def adding_inf(args, contacts):
     name, phone = args
     contacts[name] = phone
     return f"Contact {name} added."
+
 
 def get_phonenum(name, contacts):
     phone = contacts.get(name)
@@ -16,10 +19,16 @@ def get_phonenum(name, contacts):
         return f"{name}: {phone}"   
     else:
         return f"No contact named {name}"
+    
+
 def all(contacts):
+    all_log=[]
     for i in contacts:
-        print(f'{i}, {contacts.get(i)}')
-def change(args):
+        all_log.append(f'{i}, {contacts.get(i)}')
+    return all_log
+
+
+def change(args, contacts):
     if len(args) != 2:
         return "Error: Use 'change <name> <new_phone>'"
     name, phone = args
@@ -28,12 +37,15 @@ def change(args):
         return f"Phone number for {name} changed to {phone}."
     else:
         return f"No contact named {name}."
-def delete(name):
+    
+
+def delete(name, contacts):
     contacts.pop(name)
     return 'contact deleted.'
-contacts = {}
+
+
 def main():
-    global contacts
+    contacts = {}
     print("Welcome to the assistant bot!")
     while True:
         user_inp = input("Enter a command: ")
@@ -49,15 +61,16 @@ def main():
             elif command == 'phone':
                 print(get_phonenum(args[0],contacts))
             elif command == 'all':
-                all(contacts)
+                for i in all(contacts):
+                    print(i)
             elif command == 'change':
-                print(change(args))
+                print(change(args, contacts))
             elif command == 'delete':
-                print(delete(args[0]))
+                print(delete(args[0], contacts))
             else:
                 print("Invalid command.")
         except ValueError:
             print('Your line is empty, try again later.')
+            
 if __name__ == '__main__':
     main()
-
